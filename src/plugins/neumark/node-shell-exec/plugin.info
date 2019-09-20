@@ -1,0 +1,7 @@
+{
+	"title": "$:/plugins/neumark/node-shell-exec",
+	"description": "TW5 plugin to execute shell commands",
+	"author": "PeterNeumark",
+	"core-version": ">=5.0.0",
+	"list": "readme"
+}

@@ -1,0 +1,7 @@
+{
+	"title": "$:/plugins/neumark/literate-code",
+	"description": "EDN parser",
+	"author": "PeterNeumark",
+	"core-version": ">=5.0.0",
+	"list": "readme"
+}

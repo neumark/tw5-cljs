@@ -1,0 +1,17 @@
+.tc-dialog-form {
+    font-family: sans-serif;
+    color: #fff;
+    z-index: 20000;
+    position: fixed;
+    background-color: #b3bf99;
+    border: 8px solid #454f2f;
+    border-radius: 8px;
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 4em;
+    padding: 0 2em 1em 2em;
+}
+
+.tc-dialog-form h1 {
+    text-align: center;
+}

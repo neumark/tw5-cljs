@@ -1,0 +1,15 @@
+{
+  "name": "tw5-cljs",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Peter Neumark <neumark.peter@gmail.com>",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "./run.sh --listen host=127.0.0.1 port=8080",
+    "debug": "NODE_OPTS='--inspect-brk' npm run start"
+  },
+  "devDependencies": {
+    "tiddlywiki": "5.1.19"
+  },
+  "dependencies": {}
+}
