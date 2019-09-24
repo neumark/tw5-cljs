@@ -61,11 +61,17 @@ window.process = undefined;
 <div id="bootKernelPrefix" style="display:none;">
 {{ $:/boot/bootprefix.js ||$:/core/templates/javascript-tiddler}}
 </div>
+<script>
+// don't boot automatically, wait for explicit call to $tw.boot.boot()
+$tw.boot.suppressBoot = true;
+</script>
 <!--~~ Boot kernel ~~-->
 <div id="bootKernel" style="display:none;">
 {{ $:/boot/boot.js ||$:/core/templates/javascript-tiddler}}
 </div>
 <!--~~ Raw markup for the bottom of the body section ~~-->
 {{{ [all[shadows+tiddlers]tag[$:/tags/RawMarkupWikified/BottomBody]] ||$:/core/templates/raw-static-tiddler}}}
+<!-- transclude tiddler to do stuff prior to tw5 boot -->
+{{$:/core/templates/preboot.template.html}}
 </body>
 </html>

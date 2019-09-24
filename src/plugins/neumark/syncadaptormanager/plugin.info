@@ -1,0 +1,7 @@
+{
+	"title": "$:/plugins/neumark/syncadaptormanager",
+	"description": "sync adaptor manager, to enable multiple and composable sync adaptors",
+	"author": "Peter Neumark",
+	"core-version": ">=5.0.0",
+	"list": "readme"
+}

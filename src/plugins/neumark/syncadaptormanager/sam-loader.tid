@@ -1,0 +1,4 @@
+title: $:/plugins/neumark/syncadaptormanager/sam-loader.js
+tags: $:/tags/StartupAction
+
+<$action-sam-load />

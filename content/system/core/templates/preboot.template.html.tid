@@ -1,0 +1,4 @@
+title: $:/core/templates/preboot.template.html
+
+`<button onclick="$tw.boot.boot();">login</button>
+`

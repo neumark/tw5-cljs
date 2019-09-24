@@ -1,0 +1,3 @@
+title: $:/plugins/neumark/syncadaptormanager/readme
+
+Load sync adaptors manually, before startup would ordinarily.
