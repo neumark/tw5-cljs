@@ -1,0 +1,5 @@
+title: $:/language/Docs/Types/text/x-clojure
+description: Clojure(Script) source
+name: text/x-clojure
+group: Developer
+group-sort: 2

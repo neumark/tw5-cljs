@@ -1,0 +1,7 @@
+{
+	"title": "$:/plugins/neumark/redefine-modules",
+	"description": "TW5 plugin to redefine modules when source is saved",
+	"author": "PeterNeumark",
+	"core-version": ">=5.0.0",
+	"list": "main.js"
+}
