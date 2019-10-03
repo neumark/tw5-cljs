@@ -1,4 +1,4 @@
 title: $:/core/templates/preboot.template.html
 
-`<button onclick="$tw.boot.boot();">login</button>
-`
+{{{ $:/plugins/neumark/clj-support/preboot-browser.js || $:/core/templates/javascript-tiddler}}}
+`<button onclick="$tw.boot.boot();">login</button>`

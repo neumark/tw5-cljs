@@ -9,7 +9,7 @@ require(TW_HOME + "boot/boot.js").TiddlyWiki($tw);
 $tw.config = Object.assign($tw.config || {}, require('./twconfig.json'));
 
 // Install Clojure support 
-require('./plugins/neumark/clj-support/main').setup($tw);
+require('./plugins/neumark/clj-support/preboot-node').setup($tw);
 
 // Pass the command line arguments to the boot kernel
 $tw.boot.argv = Array.prototype.slice.call(process.argv,2);

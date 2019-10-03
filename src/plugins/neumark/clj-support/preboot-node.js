@@ -1,3 +1,8 @@
+/*\
+title: $:/plugins/neumark/clj-support/preboot-node.js
+type: application/javascript
+\*/
+
 const parseCommentBlocks = require("./commentparser.js").parseCommentBlocks;
 exports.setup = function($tw) {
     $tw.config.fileExtensionInfo =  $tw.config.fileExtensionInfo || Object.create(null);
