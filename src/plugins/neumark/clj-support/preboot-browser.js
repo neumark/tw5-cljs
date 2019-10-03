@@ -39,6 +39,19 @@ const defineTiddlerModule = async (tiddler) => {
     };
 };
 
+// monkeypatch $tw.modules.execute to run cljs code through cljs-standalone
+const originalEvalSandboxed = $tw.utils.evalSandboxed;
+$tw.utils.evalSandboxed = function (code,context,filename) {
+    // TODO: cljc, clj
+    if (filename.endsWith(".cljs")) {
+        const moduleExports = goog.global.cljs_standalone.compiler.eval(filename, code, {context});
+        console.log("CLJS evalSandboxed", moduleExports);
+        return moduleExports;
+    } else {
+        return originalEvalSandboxed.apply(this, arguments);
+    }
+};
+
 // monkeypatch to allow cljs tiddler modules to load
 $tw.Wiki.prototype.defineTiddlerModules = async function() {
     this.each(async function(tiddler,title) {

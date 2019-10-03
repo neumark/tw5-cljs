@@ -1,0 +1,7 @@
+{
+	"title": "$:/plugins/neumark/sam-browser-firestore",
+	"description": "sync adaptor manager plugin to write firestore",
+	"author": "Peter Neumark",
+	"core-version": ">=5.0.0",
+	"list": "browser-firestoresyncadaptor.cljs"
+}

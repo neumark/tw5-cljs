@@ -14,7 +14,7 @@ A sync adaptor module for synchronising with the local filesystem via node.js AP
 
 var configReader = require("./sam-config.js");
 
-const configTiddlerTitle = "$:/state/config/syncadaptormanager";   
+const configTiddlerTitle = "$:/config/SyncAdaptorManagerConfig";   
     
 // exports.syncadaptorModules will be populated by sam-loader.js
 exports.syncadaptorModules = {};
@@ -26,12 +26,6 @@ var getConfig = () => {
   if ($tw.wiki.tiddlerExists(configTiddlerTitle)) {
     Object.assign(config, JSON.parse($tw.wiki.getTiddlerText(configTiddlerTitle)));
   }
-  if ($tw && $tw.boot && $tw.boot.wikiInfo && $tw.boot.wikiInfo.syncadaptormanager) {
-    Object.assign(config, $tw.boot.wikiInfo.syncadaptormanager);
-  }
-  // save config to tiddler which is not synced according to TW5/core/wiki/config/SyncFilter.tid
-  // so its sent to the browser but not persisted to syncadapters.
-  $tw.wiki.addTiddler({title: configTiddlerTitle, text: JSON.stringify(config)});
   return config;
 };
 
@@ -40,7 +34,7 @@ var makeAdaptorClass = () => {
   var sa = null;
   if (!adaptorConfig) {
     sa = Object.values(exports.syncadaptorModules)[0].adaptorClass;
-    console.log("no syncadaptormanager config in wikiInfo, falling back to usinga syncadaptor module", sa);
+    console.log(`no syncadaptormanager config in ${configTiddlerTitle}, falling back to using default syncadaptor module`, sa);
   } else {
     sa = configReader.getAdaptor(adaptorConfig, exports.syncadaptorModules);
     console.log("config-based backing syncadaptor", sa);

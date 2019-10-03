@@ -10,6 +10,7 @@
         "neumark/clj-support",
         "neumark/syncadaptormanager",
         "neumark/redefine-modules",
+        "neumark/sam-browser-firestore",
         "tiddlywiki/codemirror",
 		"tiddlywiki/codemirror-closebrackets",
 		"tiddlywiki/codemirror-closetag",

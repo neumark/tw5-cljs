@@ -25,10 +25,10 @@ function evalCondition(predicate, value) {
     return predicates[predicate] === value;
 };
 
-function processCases(cases, syncadaptorModules) {
+async function processCases(cases, syncadaptorModules) {
     for (var i = 0; i < cases.length; i++) {
         if (evalCondition(cases[i].condition.predicate, cases[i].condition.value)) {
-            return getAdaptorClass(cases[i].adaptor, syncadaptorModules);
+            return await getAdaptorClass(cases[i].adaptor, syncadaptorModules);
         }
     }
 };
@@ -37,28 +37,28 @@ function getModule(location, syncadaptorModules) {
     return syncadaptorModules[location] || require(location);
 };
 
-function getClass(location, syncadaptorModules) {
-    return getModule(location, syncadaptorModules).adaptorClass;
+async function getClass(location, syncadaptorModules) {
+    return (await getModule(location, syncadaptorModules)).adaptorClass;
 };
 
-function makeFactory(config, syncadaptorModules) {
-    var factory = getModule(config.location, syncadaptorModules).adaptorFactory;
-    var adaptorClass = getAdaptorClass(config.adaptor, syncadaptorModules);
-    return factory(adaptorClass, config);
+async function makeFactory(config, syncadaptorModules) {
+    var factory = await getModule(config.location, syncadaptorModules).adaptorFactory;
+    var adaptorClass = await getAdaptorClass(config.adaptor, syncadaptorModules);
+    return await factory(adaptorClass, config);
 }
 
-function getAdaptorClass (config, syncadaptorModules) {
+async function getAdaptorClass (config, syncadaptorModules) {
     if (samUtil.isArray(config)) {
         return config.map((c) => getAdaptorClass(c, syncadaptorModules));
     }
     const adaptorType = config.type || "class";
     switch (adaptorType) {
         case "class":
-            return getClass(config.location, syncadaptorModules);
+            return await getClass(config.location, syncadaptorModules);
         case "conditional":
-            return processCases(config.cases, syncadaptorModules);
+            return await processCases(config.cases, syncadaptorModules);
         case "factory":
-            return makeFactory(config, syncadaptorModules);
+            return await makeFactory(config, syncadaptorModules);
         default:
             throw new Error ("SAM doesnt know about adaptor type "+adaptorType);
     };
@@ -67,8 +67,8 @@ function getAdaptorClass (config, syncadaptorModules) {
 // getAdaptor needs the syncadaptorModules map because loading sam bungles these
 // modules so startup.js doesn't load a different syncadaptor than SAM.
 // The original version of these modules lives in syncadaptorModules instead.
-function getAdaptor (config, syncadaptorModules) {
-    var adaptorClass = getAdaptorClass(config, syncadaptorModules);
+async function getAdaptor (config, syncadaptorModules) {
+    var adaptorClass = await getAdaptorClass(config, syncadaptorModules);
     if (samUtil.isArray(adaptorClass)) {
         throw new Error ("Top-level syncadaptor cannot be an array, must be single class");
     }

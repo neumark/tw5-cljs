@@ -2,7 +2,7 @@
 title: $:/plugins/neumark/clj-support/preboot-node.js
 type: application/javascript
 \*/
-
+const path = require('path');
 const parseCommentBlocks = require("./commentparser.js").parseCommentBlocks;
 exports.setup = function($tw) {
     $tw.config.fileExtensionInfo =  $tw.config.fileExtensionInfo || Object.create(null);
@@ -30,6 +30,20 @@ exports.setup = function($tw) {
                     const allLines = text.split('\n');
                     headerLines.forEach(_ => allLines.shift());
                     text = allLines.join('\n');
+                }
+                // if tiddler is within content dir, remove content dir prefix from title
+                var tiddlersPath = path.resolve($tw.config.wikiTiddlersSubDir);
+                if (filename.startsWith(tiddlersPath)) {
+                    // +1 to remove trailing slash
+                    fields.title = filename.substr(tiddlersPath.length+1);
+                } else {
+                    // if tiddler is in plugin dir, replace plugin dir prefix with "$:/plugins"
+                    $tw.getLibraryItemSearchPaths($tw.config.pluginsPath, $tw.config.pluginsEnvVar)
+                        .map(p => path.resolve(p))
+                        .filter(p => filename.startsWith(p))
+                        .forEach(p => {
+                            fields.title = "$:/plugins" + filename.substr(p.length);
+                        });
                 }
             }
             fields.text = text;

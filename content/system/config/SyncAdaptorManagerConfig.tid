@@ -1,0 +1,43 @@
+created: 20191003194113313
+modified: 20191003194941316
+tags: 
+title: $:/config/SyncAdaptorManagerConfig
+type: application/json
+
+{
+  "verbose": true,
+  "adaptor": {
+    "type": "conditional",
+    "cases": [
+      {
+        "condition": {
+          "predicate": "platform",
+          "value": "node"
+        },
+        "adaptor": {
+          "type": "class",
+          "location": "$:\/plugins\/tiddlywiki\/filesystem\/filesystemadaptor.js"
+        }
+      },
+      {
+        "condition": {
+          "predicate": "platform",
+          "value": "browser"
+        },
+        "adaptor": {
+          "type": "factory",
+          "location": "$:\/plugins\/neumark\/syncadaptormanager\/sam-multiwrite.js",
+          "adaptor": [
+        	{
+              "type": "class",
+          	  "location": "$:\/plugins\/tiddlywiki\/tiddlyweb\/tiddlywebadaptor.js"
+      		},
+            {
+              "type": "class",
+              "location": "$:\/plugins\/neumark\/sam-browser-firestore\/browser-firestoresyncadaptor.cljs"
+            }]
+      	}
+      }
+    ]
+  }
+}
