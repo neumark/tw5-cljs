@@ -46,60 +46,80 @@ class PromiseToCallbackInvoker {
         return samPromise.getSupportedCallbackInterfaceMethods(this.promiseAdaptorConstructor);
     }
     init(options) {
-        this.instance = new this.promiseAdaptorConstructor(Object.assign({}, options, {sam: this.config}));
-        // automatically read all tiddlers on startup if the function exists.
-        if (typeof this.instance.readAll === 'function') {
-            this.instance.readAll().then(
-                () => {console.log("read all tiddlers");},
-                (e) => {throw e;});
-        }
+        this.instancePromise = Promise.resolve(this.promiseAdaptorConstructor)
+            .then(cons => {
+                this.instance = new cons(Object.assign({}, options, {sam: this.config}));
+                return this.instance;
+            });
+        this.instancePromise.then(instance => {
+            // automatically read all tiddlers on startup if the function exists.
+            if (typeof instance.readAll === 'function') {
+                instance.readAll().then(
+                    () => {console.log("read all tiddlers");},
+                    (e) => {throw e;});
+            }
+        });
     }
     invoke(methodName, args) {
         return this[methodName].apply(this, args);
     }
     // --- classic syncadaptor interface methods ---
     isReady() {
-        return this.instance.isReady();
+        return this.instance ? this.instance.isReady() : false;
     }
     getTiddlerInfo(tiddler) {
-        return this.instance.getTiddlerInfo(tiddler);
+        return this.instance ? this.instance.getTiddlerInfo(tiddler) : {};
     }
     saveTiddler(tiddler, callback) {
         // callback parameters: (err,adaptorInfo,revision)
-        return this.instance.write(tiddler.fields).then(
-            (result) => callback(null, result.adaptorInfo, result.revision),
-            callback);
+        return this.instancePromise
+            .then(instance => instance.write(tiddler.fields))
+            .then(
+                (result) => callback(null, result.adaptorInfo, result.revision),
+                callback);
     }
     loadTiddler(tiddlerTitle, callback) {
         // callback parameters: (err,tiddlerFields)
-        return this.instance.read(tiddlerTitle).then(
-            (tidderFields) => callback(null, tiddlerFields),
-            callback);
+        return this.instancePromise
+            .then(instance => instance.read(tiddlerTitle))
+            .then(
+                (tidderFields) => callback(null, tiddlerFields),
+                callback);
     }
     deleteTiddler(tiddlerTitle, callback, options) {
-        return this.instance.remove(tiddlerTitle, options).then(
-            () => callback(null),
-            callback);
+        return this.instancePromise
+            .then(instance => instance.remove(tiddlerTitle, options))
+            .then(
+                () => callback(null),
+                callback);
     }
     getStatus(callback) {
-        return this.instance.getStatus().then(
-            (status) => callback(status.isLoggedIn, status.username, status.isReadOnly, status.isAnonymous),
-            callback);
+        return this.instancePromise
+            .then(instance => instance.getStatus())
+            .then(
+                (status) => callback(status.isLoggedIn, status.username, status.isReadOnly, status.isAnonymous),
+                callback);
     }
     login(username, password, callback) {
-        return this.instance.login(username, password).then(
-            () => callback(null),
-            callback);
+        return this.instancePromise
+            .then(instance => instance.login(username, password))
+            .then(
+                () => callback(null),
+                callback);
     }
     logout(callback) {
-        return this.instance.logout().then(
-            () => callback(null),
-            callback);
+        return this.instancePromise
+            .then(instance => instance.logout())
+            .then(
+                () => callback(null),
+                callback);
     }
     getSkinnyTiddlers(callback) {
-        return this.instance.readSkinny().then(
-            (skinnyTiddlers) => callback(null, skinnyTiddlers),
-            callback);
+        return this.instancePromise
+            .then(instance => instance.readSkinny())
+            .then(
+                (skinnyTiddlers) => callback(null, skinnyTiddlers),
+                callback);
     }
 };
 

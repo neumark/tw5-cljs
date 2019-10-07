@@ -6,10 +6,17 @@
   "license": "UNLICENSED",
   "scripts": {
     "start": "./run.sh --listen host=127.0.0.1 port=8080",
-    "debug": "NODE_OPTS='--inspect-brk' npm run start"
+    "debug": "NODE_OPTS='--inspect-brk' npm run start",
+    "test": "karma start test/karma.conf.js"
   },
   "devDependencies": {
-    "tiddlywiki": "5.1.19"
+    "karma": "^4.3.0",
+    "karma-browserstack-launcher": "^1.4.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^2.0.1",
+    "karma-mocha-reporter": "^2.2.5"
   },
-  "dependencies": {}
+  "dependencies": {
+    "tiddlywiki": "5.1.19"
+  }
 }
