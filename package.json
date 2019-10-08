@@ -7,14 +7,18 @@
   "scripts": {
     "start": "./run.sh --listen host=127.0.0.1 port=8080",
     "debug": "NODE_OPTS='--inspect-brk' npm run start",
-    "test": "karma start test/karma.conf.js"
+    "test": "karma start test/karma.conf.js",
+    "test-node": "node node_modules/jasmine-node/lib/jasmine-node/cli.js --verbose test",
+    "test-node-debug": "node --inspect-brk node_modules/jasmine-node/lib/jasmine-node/cli.js --verbose test"
   },
   "devDependencies": {
+    "jasmine-node": "^3.0.0",
     "karma": "^4.3.0",
     "karma-browserstack-launcher": "^1.4.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-jasmine": "^2.0.1",
-    "karma-mocha-reporter": "^2.2.5"
+    "karma-mocha-reporter": "^2.2.5",
+    "tmp": "^0.1.0"
   },
   "dependencies": {
     "tiddlywiki": "5.1.19"
