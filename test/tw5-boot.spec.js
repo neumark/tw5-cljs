@@ -19,7 +19,7 @@ describe("test", function (done) {
       .then(() => tw5.initTiddlywiki({
               // preboot: $tw => $tw.hooks.addHook('th-server-command-post-start', (s) => console.log("server", s)),
               wikiPath: tmpobj.name,
-              argv: `${tmpobj.name} --verbose version`.split(" ")
+              argv: `${tmpobj.name} --version`.split(" ")
           }));
   });
 
@@ -27,11 +27,18 @@ describe("test", function (done) {
     tmpobj.removeCallback();
   });
 
-  it("boot", function (done) {
-    console.log("in test");
+  it("built-in tiddlers can be found", function (done) {
     $twPromise.then($tw => {
         expect($tw.wiki.tiddlerExists("$:/boot/boot.js")).toBe(true);
         done();
     });
   });
+
+  it("filesystem syncer is available", function (done) {
+    $twPromise.then($tw => {
+        expect($tw.syncadaptor.name).toBe("filesystem");
+        done();
+    });
+  });
+
 }); 
