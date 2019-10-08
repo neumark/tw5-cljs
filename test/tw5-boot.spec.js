@@ -17,9 +17,9 @@ describe("test", function (done) {
         path.resolve(__dirname, "tiddlywiki.info"),
         path.resolve(tmpobj.name, "tiddlywiki.info"))
       .then(() => tw5.initTiddlywiki({
-              preboot: $tw => $tw.hooks.addHook('th-server-command-post-start', (s) => console.log("server", s)),
+              // preboot: $tw => $tw.hooks.addHook('th-server-command-post-start', (s) => console.log("server", s)),
               wikiPath: tmpobj.name,
-              argv: `${tmpobj.name} --verbose --listen host=127.0.0.1 port=58080`.split(" ")
+              argv: `${tmpobj.name} --verbose version`.split(" ")
           }));
   });
 
