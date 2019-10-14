@@ -7,7 +7,8 @@ function initTiddlywiki(opts) {
     var TW_HOME = path.resolve(__dirname, "../node_modules/tiddlywiki/");
     var $tw = require(path.resolve(TW_HOME, "boot/bootprefix.js")).bootprefix();
     require(path.resolve(TW_HOME, "boot/boot.js")).TiddlyWiki($tw);
-    $tw.cljs_standalone = require(path.resolve(__dirname, "../files/cljs-standalone.js")).cljs_standalone;
+    // local cljs_standalone compiled for node
+    $tw.cljs_standalone = require(path.resolve(__dirname, "../files/cljs-standalone-node.js")).cljs_standalone;
 
     // Pass the command line arguments to the boot kernel
     $tw.boot.argv = argv || Array.prototype.slice.call(process.argv,2);
@@ -21,11 +22,21 @@ function initTiddlywiki(opts) {
         $tw.config = Object.assign($tw.config || {}, twConfig);
     }
 
-    // Install Clojure support
+    // run preboot (Install Clojure support)
     var ready = Promise.resolve(preboot ? preboot($tw) : true);
 
     // Boot the TW5 app
-    return ready.then(() => new Promise((resolve, reject) => $tw.boot.boot(resolve))).then(() => $tw);
+    return ready
+        .then(() => new Promise((resolve, reject) => $tw.boot.boot(resolve)))
+        .then(() => {
+            // wait for cljs modules
+            const cljsModules = $tw.modules.titles['$:/plugins/neumark/clj-support/module-loader.js'];
+            if (cljsModules && cljsModules.exports && cljsModules.exports.cljsModuleLoadPromises) {
+                return Promise.all(cljsModules.exports.cljsModuleLoadPromises);
+            }
+            return true;
+        })
+        .then(() => $tw);
 };
 
 if (require.main === module) {
