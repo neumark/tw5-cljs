@@ -137,6 +137,7 @@ describe("test", function (done) {
             (defn ^:export foobar1 [x]
             (+ 1 (* 3 x)))`)
     ]}).then($tw => {
+        console.log("cljstest");
         expect($tw.wiki.tiddlerExists("test.cljs")).toBe(true);
         expect(Object.keys($tw.modules.titles["test.cljs"].exports)).toBe(["foobar1"]);
         done();

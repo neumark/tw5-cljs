@@ -1,8 +1,5 @@
 #!/usr/bin/env node
 const path = require("path");
-const cljs_standalone = require("../files/cljs-standalone.js");
-global.goog = global.goog || {};
-global.goog.cljs_standalone = cljs_standalone;
 
 function initTiddlywiki(opts) {
     // Initialize boot code
@@ -10,12 +7,13 @@ function initTiddlywiki(opts) {
     var TW_HOME = path.resolve(__dirname, "../node_modules/tiddlywiki/");
     var $tw = require(path.resolve(TW_HOME, "boot/bootprefix.js")).bootprefix();
     require(path.resolve(TW_HOME, "boot/boot.js")).TiddlyWiki($tw);
+    $tw.cljs_standalone = require(path.resolve(__dirname, "../files/cljs-standalone.js")).cljs_standalone;
 
     // Pass the command line arguments to the boot kernel
     $tw.boot.argv = argv || Array.prototype.slice.call(process.argv,2);
 
     if (preloadTiddlers) {
-        $tw.preloadTiddlers = ($tw.preloadTiddlers || []).concat(preloadTiddlers);
+        $tw.preloadTiddlerArray(preloadTiddlers);
     }
 
     // Load custom config
