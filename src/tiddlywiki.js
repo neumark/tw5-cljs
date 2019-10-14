@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 const path = require("path");
+const cljs_standalone = require("../files/cljs-standalone.js");
+global.goog = global.goog || {};
+global.goog.cljs_standalone = cljs_standalone;
 
 function initTiddlywiki(opts) {
     // Initialize boot code
