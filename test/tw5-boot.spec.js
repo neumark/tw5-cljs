@@ -14,11 +14,11 @@ var deleteFolderRecursive = function(path) {
       if (fs.lstatSync(curPath).isDirectory()) { // recurse
         deleteFolderRecursive(curPath);
       } else { // delete file
-        console.log("deleting file", curPath);
+        // console.log("deleting file", curPath);
         fs.unlinkSync(curPath);
       }
     });
-    console.log("deleting dir", path);
+    // console.log("deleting dir", path);
     fs.rmdirSync(path);
   }
 };
@@ -133,14 +133,13 @@ describe("test", function (done) {
         makeCLJSTiddler(
             "test.cljs",
             `(ns my.test6a)
-            (js/console.log "declaring foobar1")
             (defn ^:export foobar1 [x]
             (+ 1 (* 3 x)))`)
     ]}).then($tw => {
         console.log("cljstest");
         expect($tw.wiki.tiddlerExists("test.cljs")).toBe(true);
-        // console.log(Object.keys($tw.modules.titles));
-        // expect(Object.keys($tw.modules.titles["test.cljs"].exports)).toBe(["foobar1"]);
+        expect(Object.keys($tw.modules.titles["test.cljs"].exports)).toEqual(["foobar1"]);
+        expect($tw.modules.titles["test.cljs"].exports.foobar1(2)).toEqual(7);
         done();
     });
   });

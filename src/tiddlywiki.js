@@ -4,6 +4,8 @@ const path = require("path");
 function initTiddlywiki(opts) {
     // Initialize boot code
     ({twConfig, preboot, preloadTiddlers, argv} = opts || {});
+    // set plugin dir env var
+    process.env.TIDDLYWIKI_PLUGIN_PATH = path.resolve(__dirname, "plugins");
     var TW_HOME = path.resolve(__dirname, "../node_modules/tiddlywiki/");
     var $tw = require(path.resolve(TW_HOME, "boot/bootprefix.js")).bootprefix();
     require(path.resolve(TW_HOME, "boot/boot.js")).TiddlyWiki($tw);
