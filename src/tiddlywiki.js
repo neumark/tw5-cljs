@@ -30,14 +30,6 @@ function initTiddlywiki(opts) {
     // Boot the TW5 app
     return ready
         .then(() => new Promise((resolve, reject) => $tw.boot.boot(resolve)))
-        .then(() => {
-            // wait for cljs modules
-            const cljsModules = $tw.modules.titles['$:/plugins/neumark/clj-support/module-loader.js'];
-            if (cljsModules && cljsModules.exports && cljsModules.exports.cljsModuleLoadPromises) {
-                return Promise.all(cljsModules.exports.cljsModuleLoadPromises);
-            }
-            return true;
-        })
         .then(() => $tw);
 };
 

@@ -7,13 +7,15 @@ module-type: startup
 exports.name = "cljsModuleLoader";
 // exports.platforms = ["browser"];
 exports.after = ["load-modules"];
-exports.synchronous = true;
-exports.cljsModuleLoadPromises = [];
-exports.startup = () => {
+exports.before = ["startup"];
+exports.synchronous = false;
+exports.startup = (cb) => {
+    const cljsModuleLoadPromises = [];
+    console.log("cljs module loader");
     $tw.wiki.each((tiddler,title) => {
         if (tiddler.hasField("module-type") && tiddler.fields.type === "text/x-clojure") {
             console.log("loading cljs module", title);
-            exports.cljsModuleLoadPromises.push(
+            cljsModuleLoadPromises.push(
                 $tw.cljs_standalone.compiler.eval(
                     title,
                     tiddler.fields.text
@@ -28,4 +30,5 @@ exports.startup = () => {
                     error => console.log(error)));
         }
     });
+    Promise.all(cljsModuleLoadPromises).then(cb);
 };
